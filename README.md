@@ -52,7 +52,7 @@ In this notation, [] indicates an optional parameter, * indicates 0 or more time
 
 Once the input line is parsed, and the Param object variables are properly set, you must print the object's data with the printParams() function, but only when the shell is in debug mode.
 
-####PART II:
+#### PART II:
 You must extend the previous program to create a basic shell program. The functionality of your shell program is similar to that of a production shell, such as a c-shell or a bourne shell found in many operating systems. Input from a command line is read, interpreted, and executed. Input/Output redirection, as well as foreground/background execution, must also be implemented. However, interprocess-communication will not need to be implemented for this project.
 
 Your program is not required to be "bulletproof." You can assume that input data will follow the description given in class. You may NOT assume that input data is valid. That is, the command may be misspelled. For example, I could test your code by entering the command cqt file instead of cat file. Your shell must provide a short and descriptive message explaining the error that has occurred. Your shell must continue processing commands until the user enters the exit command. Before terminating execution, your shell must make certain that all background child processes have exited. In other words, the parent cannot terminate until all child processes have terminated.
@@ -63,7 +63,7 @@ Your shell must be started from the command line according to the following synt
 ```myshell [-Debug]```
 The option –Debug may be provided to print out the structure of a parsed command. Be sure that your Makefile produces the program myshell and not any program name of your choice.
 
-SAMPLE TEST CASES
+### SAMPLE TEST CASES
 The following describes a list of test cases as a starting point for testing your work. Your program must pass at least these tests for you to receive full credit. Additional test cases may be used during grading.
 
 ```ls –l```	shows a listing of files in the current directory
@@ -103,7 +103,7 @@ README
 
 The README file must describe the purpose and usage of your program. The file parse.cpp provides the parse functionality implemented in Part I to parse the input string into the given structure. It is important that you refactor your code but keep the main function in myshell.cpp. Finally, document the source code as outlined in the coding guidelines in Canvas. Documenting source code is an essential part of programming. If you do not include comments in your source code, points will be deducted.
 
-####TESTING & EVALUATION
+### TESTING & EVALUATION
 Your program will be evaluated on the department's public Linux servers according to the steps shown below. Notice that warnings and errors are not permitted and will make grading quick!
 
 Program compilation with Makefile. The options –g and –Wall must be enabled in the Makefile. See the sample Makefile that I uploaded in the course shell.
