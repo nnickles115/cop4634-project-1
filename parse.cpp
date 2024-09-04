@@ -1,30 +1,39 @@
 /**
- * parse.cpp
+ * @file parse.cpp
+ * @brief Implementation of the Parse class for handling command parsing.
  * 
- * @authors Noah Nickles, Dylan Stephens
- * @date 9/ /2024
- * @info Course COP4634
+ * This file contains the implementation of methods in the Parse class,
+ * including parsing commands, handling input/output redirection, and
+ * background execution flags.
+ * 
+ * @author Noah Nickles
+ * @author Dylan Stephens
+ * @date 9/3/2024
+ * @details Course COP4634c
  */
 
 #include "parse.hpp"
 
+// Constructor, no specific initialization needed.
 Parse::Parse() {
 }
 
+// Destructor, nothing specific to clean up.
 Parse::~Parse() {
 }
 
+
 void Parse::handleInputRedirection(char* &token, Param &param) {
-    // No delim between flag and filename.
+    // Check if input redirection is combined with the filename (e.g., "<file").
     if(token != nullptr && std::strlen(token) > 1) {
-        param.setInputRedirect(token + 1);
+        param.setInputRedirect(token + 1); // Skip the '<' character.
         return;
     }
 
-    // Delim between flag and filename.
+    // Handle the case where there's a space between '<' and the filename.
     token = std::strtok(nullptr, DELIM);
     if(token != nullptr) {
-        param.setInputRedirect(token);
+        param.setInputRedirect(token); // Set input redirection file.
     }
     else {
         std::cerr << "Error: No input file specified after '<'\n";
@@ -32,16 +41,16 @@ void Parse::handleInputRedirection(char* &token, Param &param) {
 }
 
 void Parse::handleOutputRedirection(char* &token, Param &param) {
-    // No delim between flag and filename.
+    // Check if output redirection is combined with the filename (e.g., ">file").
     if(token != nullptr && std::strlen(token) > 1) {
-        param.setOutputRedirect(token + 1);
+        param.setOutputRedirect(token + 1); // Skip the '>' character.
         return;
     }
     
-    // Delim between flag and filename.
+    // Handle the case where there's a space between '>' and the filename.
     token = std::strtok(nullptr, DELIM);
     if(token != nullptr) {
-        param.setOutputRedirect(token);
+        param.setOutputRedirect(token); // Set output redirection file.
     }
     else {
         std::cerr << "Error: No input file specified after '>'\n";
@@ -49,9 +58,10 @@ void Parse::handleOutputRedirection(char* &token, Param &param) {
 }
 
 void Parse::handleBackgroundProcess(char* &token, Param &param) {
+    // Move to the next token to ensure '&' is the last token.
     token = std::strtok(nullptr, DELIM);
-    if(token == nullptr) { // Check if nullptr for final token in command
-        param.setBackground(1);
+    if(token == nullptr) { // '&' must be the final token.
+        param.setBackground(1); // Set background execution flag to true.
     }
     else {
         std::cerr << "Error: '&' must be at the very end of the command.\n";
@@ -59,18 +69,20 @@ void Parse::handleBackgroundProcess(char* &token, Param &param) {
 }
 
 bool Parse::parseCommand(char* command, Param& param) {
+    // Tokenize the input command string using delimiters (space or tab).
     char* token = std::strtok(command, DELIM);
 
-    // No tokens to process, return early.
+    // No tokens found, return early.
     if(token == nullptr) {
         return false;
     }
 
-    // Exit command was ran, signal program to close.
+    // If the first token is "exit", signal to terminate the shell.
     if(std::strcmp(token, EXIT_COMMAND) == 0) {
         return true;
     }
 
+    // Process each token in the command string.
     while(token != nullptr) {
         if(token[0] == IN_REDIRECT_FLAG) {
            handleInputRedirection(token, param);
@@ -80,13 +92,14 @@ bool Parse::parseCommand(char* command, Param& param) {
         }
         else if(std::strcmp(token, BACKGROUND_FLAG) == 0) {
             handleBackgroundProcess(token, param);
-            break; // & is the final token, so break out early here.
+            break; // '&' is the last token, so stop processing.
         }
         else {
-            param.addArgument(token);
+            param.addArgument(token); // Add the token as an argument.
         }
 
-        token = std::strtok(nullptr, DELIM); // Get next token
+        // Continue to the next token.
+        token = std::strtok(nullptr, DELIM);
     }
-    return false;
+    return false; // Return false to indicate the command is not "exit".
 }
