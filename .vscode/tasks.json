@@ -10,9 +10,7 @@
                 "-g",
                 "-Wall",
                 "-o", "myshell",
-                "myshell.cpp",
-                "param.cpp",
-                "parse.cpp",
+                "*.cpp",
                 "-I.",
                 "-std=c++17"
             ],

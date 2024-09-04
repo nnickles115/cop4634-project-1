@@ -49,7 +49,7 @@ class Param {
 		 * Initializes the Param object with no arguments, no input/output redirection, 
 		 * and background execution set to false.
 		 */
-		Param(); 
+		Param();
 		
 		/**
 		 * @brief Adds an argument string to the argument list in this object.

@@ -11,10 +11,11 @@
  * @details Course COP4634
  */
 
-#include <iostream>
 #include <cstring>
-#include "parse.hpp"
+#include <iostream>
+
 #include "param.hpp"
+#include "parse.hpp"
 
 // Stores the terminal prompt chars.
 static constexpr const char* PROMPT     = "$$$ ";
@@ -48,16 +49,13 @@ bool isDebugMode(int argc, char** argv) {
  * parses the command using the provided parser, 
  * and executes the parsed command.
  * 
- * The loop ends when the user inputs the "exit" command.
- * 
  * If debug mode is enabled, it will print the parsed 
  * command parameters.
  * 
  * @param debug Flag to enable or disable debug mode.
  * @param parser Reference to the Parse object for command parsing.
  */
-void run(bool& debug, Parse& parser) {
-    // Continuously prompt until "exit" command is called.
+void run(bool debug, Parse& parser) {
     while(true) {
         Param param;
         char command[MAX_COMMAND_LENGTH];
@@ -66,11 +64,16 @@ void run(bool& debug, Parse& parser) {
         std::cout << PROMPT;
         std::cin.getline(command, MAX_COMMAND_LENGTH);
 
-        // Holds the return value of parser.parseCommand().
-        bool exitProgram = parser.parseCommand(command, param);
-        if(exitProgram) break; // End loop if "exit" was called.
+        // Prevent Crtl+D (close input) from causing infinite loop.
+        if(!std::cin) {
+            std::cerr << "exiting...\n";
+            break;
+        }
 
-        // Print param info if debug is enabled.
+        // Parse the user input.
+        parser.parseCommand(command, param);
+
+        // Print param info if debug flag is enabled.
         if(debug) {
             param.printParams();
         }
@@ -90,15 +93,13 @@ void run(bool& debug, Parse& parser) {
  */
 int main(int argc, char** argv) {
     // Creates a new parser object.
-    Parse* parser = new Parse();
+    Parse parser;
 
     // Determines if debug mode is enabled based on program arguments.
     bool debug = isDebugMode(argc, argv);
 
     // Start main program loop and pass in debug and parser instance.
-    run(debug, *parser);
+    run(debug, parser);
 
-    // Free allocated heap memory and exit program with success.
-    delete parser;
     return 0;
 }

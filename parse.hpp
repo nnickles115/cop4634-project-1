@@ -15,8 +15,10 @@
 #ifndef _PARSE_HPP
 #define _PARSE_HPP
 
-#include <iostream>
 #include <cstring>
+#include <iostream>
+
+#include "command_handler.hpp"
 #include "param.hpp"
 
 /**
@@ -41,9 +43,6 @@ class Parse {
         // The character flag to indicate output redirection (`>`).
         static constexpr char OUT_REDIRECT_FLAG = '>';
 
-        // The command to terminate the shell session ("exit").
-        static constexpr const char* EXIT_COMMAND = "exit";
-
         /**
          * @brief Handles input redirection (`<`) for the parsed command.
          * 
@@ -53,7 +52,7 @@ class Parse {
          * @param token The current token being processed.
          * @param param The Param object to store the input file information.
          */
-        void handleInputRedirection(char* &token, Param &param);
+        void parseInputRedirection(char* &token, Param &param);
 
         /**
          * @brief Handles output redirection (`>`) for the parsed command.
@@ -64,7 +63,7 @@ class Parse {
          * @param token The current token being processed.
          * @param param The Param object to store the output file information.
          */
-        void handleOutputRedirection(char* &token, Param &param);
+        void parseOutputRedirection(char* &token, Param &param);
 
         /**
          * @brief Handles background execution flag (`&`) for the parsed command.
@@ -76,24 +75,10 @@ class Parse {
          * @param token The current token being processed.
          * @param param The Param object to store the background execution flag.
          */
-        void handleBackgroundProcess(char* &token, Param &param);
+        void parseBackgroundProcess(char* &token, Param &param);
 
 
     public:
-        /**
-         * @brief Constructs a Parse object.
-         * 
-         * The constructor initializes the Parse object with no specific data.
-         */
-        Parse();
-
-        /**
-         * @brief Destroys the Parse object.
-         * 
-         * The destructor performs cleanup operations if necessary.
-         */
-        ~Parse();
-
         /**
          * @brief Parses a command string and populates the Param object.
          * 
@@ -104,9 +89,8 @@ class Parse {
          * 
          * @param command The command string to be parsed.
          * @param param The Param object to be populated with the parsed data.
-         * @return `true` if the "exit" command is detected, `false` otherwise.
          */
-        bool parseCommand(char* command, Param& param);
+        void parseCommand(char* command, Param& param);
 };
 
 #endif

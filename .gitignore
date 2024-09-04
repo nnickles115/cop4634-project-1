@@ -31,3 +31,10 @@
 *.out
 *.app
 myshell
+slow
+
+# Tester files
+*.c
+
+# Output files
+*.txt

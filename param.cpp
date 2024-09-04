@@ -14,76 +14,78 @@
 
 using namespace std;
 
-// Constructs a Param object with initial default values.
 Param::Param() {
-	inputRedirect  = NULL; 
-	outputRedirect = NULL;
+	inputRedirect  = nullptr; 
+	outputRedirect = nullptr;
 	background 	   = 0;
 	argumentCount  = 0;
 }
 
-// Adds a parsed argument to the argument vector.
 void Param::addArgument(char* newArgument) {
-	if(newArgument == NULL) return;
+	// Return early if argument is null.
+	if(newArgument == nullptr) return;
 
+	// Ensure args aren't more than MAXARGS.
 	if(argumentCount < MAXARGS) {
+		/*
+		 * Increment argumentCount and add associated
+		 * arg at the argumentVector's argumentCount element.
+		*/
 		argumentVector[argumentCount++] = newArgument;
-	} else {
+	} 
+	else {
 		cerr << "Error: Too many arguments. Maximum allowed is " 
 			 << MAXARGS 
 			 << "\n";
 	}
 }
 
-// Retrieves the stored arguments as a null-terminated array.
 char** Param::getArguments() {
+	// Create arg array with argumentCount + 1 for null-terminator.
 	char** args = new char*[argumentCount + 1];
+
+	// Copy arguments from argumentVector[] into args[].
 	for(int i = 0; i < argumentCount; i++) {
 		args[i] = argumentVector[i];
 	}
-	args[argumentCount] = NULL; // Add null-terminator
+
+	// Append null-terminator and return array.
+	args[argumentCount] = nullptr;
 	return args;
 }
 
-// Sets the input redirection file path.
 void Param::setInputRedirect(char *newInputRedirect) {
 	inputRedirect = newInputRedirect;
 }
 
-// Sets the output redirection file path.
 void Param::setOutputRedirect(char *newOutputRedirect) {
 	outputRedirect = newOutputRedirect;
 }
 
-// Sets whether the command should run in the background.
 void Param::setBackground(int newBackground) {
 	background = newBackground;
 }
 
-// Retrieves the input redirection file path.
 char* Param::getInputRedirect() {
 	return inputRedirect;
 }
 
-// Retrieves the output redirection file path.
 char* Param::getOutputRedirect() {
 	return outputRedirect;
 }
 
-// Retrieves the background execution flag.
 int Param::getBackground() {
 	return background;
 }
 
-// Prints the current parameters stored in the Param object.
 void Param::printParams() {
 	cout << "InputRedirect: [" 
-	     << (inputRedirect != NULL ? inputRedirect : "NULL");
+	     << (inputRedirect != nullptr ? inputRedirect : "NULL");
 
 	cout << "]"
-	     << endl 
+	     << endl
 		 <<	"OutputRedirect: [" 
-		 << (outputRedirect != NULL ? outputRedirect : "NULL");
+		 << (outputRedirect != nullptr ? outputRedirect : "NULL");
 
 	cout << "]" 
 	     << endl 
