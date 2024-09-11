@@ -35,6 +35,8 @@ slow
 
 # Tester files
 *.c
+grader1.0
 
 # Output files
 *.txt
+*.zip
