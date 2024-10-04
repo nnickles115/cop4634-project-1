@@ -70,7 +70,7 @@ void CommandHandler::exitProcess() {
     // Wait for any remaining child processes to finish.
     int status;
     pid_t pid;
-    while((pid = waitpid(-1, &status, WNOHANG)) > 0) {
+    while((pid = waitpid(-1, &status, 0)) > 0) {
         // Reap all child processes (including background ones).
         std::cout << "Reaped child process with PID: " 
                   << pid 
